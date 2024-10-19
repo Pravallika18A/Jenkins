@@ -1,0 +1,49 @@
+pipeline {
+    agent any  // Use any available agent
+
+    environment {
+        NODE_ENV = 'production'  // Set environment variable
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                // Clone the repository from Git
+                git 'https://github.com/Pravallika18A/Jenkins/new/main'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the project
+                sh 'npm install'
+                sh 'npm run build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests
+                sh 'npm test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy the application
+                echo 'Deploying application...'
+                // Add your deployment commands here, e.g.:
+                // sh 'scp -r ./dist user@server:/path/to/deploy'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
